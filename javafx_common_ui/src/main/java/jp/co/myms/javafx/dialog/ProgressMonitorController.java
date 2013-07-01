@@ -18,6 +18,10 @@ public class ProgressMonitorController implements Initializable {
 	private Label lblMessage; // Value injected by FXMLLoader
 
 	@FXML
+	//  fx:id="lblMainMessage"
+	private Label lblMainMessage; // Value injected by FXMLLoader
+
+	@FXML
 	//  fx:id="btnCancel"
 	private Button btnCancel; // Value injected by FXMLLoader
 
@@ -36,6 +40,7 @@ public class ProgressMonitorController implements Initializable {
 	// This method is called by the FXMLLoader when initialization is complete
 	public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
 		assert btnCancel != null : "fx:id=\"btnCancel\" was not injected: check your FXML file 'ProgressMonitorDialog.fxml'.";
+		assert lblMainMessage != null : "fx:id=\"lblMainMessage\" was not injected: check your FXML file 'ProgressMonitorDialog.fxml'.";
 		assert lblMessage != null : "fx:id=\"lblMessage\" was not injected: check your FXML file 'ProgressMonitorDialog.fxml'.";
 		assert progressBar != null : "fx:id=\"progressBar\" was not injected: check your FXML file 'ProgressMonitorDialog.fxml'.";
 

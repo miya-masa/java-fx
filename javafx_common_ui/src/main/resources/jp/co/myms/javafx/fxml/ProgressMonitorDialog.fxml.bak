@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="157.0" prefWidth="540.0" xmlns:fx="http://javafx.com/fxml" fx:controller="jp.co.nikkeibp.cms.ui.ProgressMonitorController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="157.0" prefWidth="540.0" xmlns:fx="http://javafx.com/fxml" fx:controller="jp.co.myms.javafx.dialog.ProgressMonitorController">
   <children>
     <ProgressBar id="ProgressBar" fx:id="progressBar" prefHeight="21.0" prefWidth="520.0" progress="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0" />
     <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#onSelectedCancel" text="キャンセル" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
