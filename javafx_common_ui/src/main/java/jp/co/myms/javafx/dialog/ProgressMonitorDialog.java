@@ -41,31 +41,51 @@ public class ProgressMonitorDialog {
 	public void run(final RunnableWithProgress runnable) throws CancelException {
 
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
-		executorService.execute(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					runnable.run(progressMonitor);
-				} catch (CancelException e) {
-					progressMonitor.setCanceled();
-				} finally {
-					closeStage(stage);
-				}
-			}
-		});
+		InternalRunnable internalRunnable = new InternalRunnable(stage, runnable, progressMonitor);
+		executorService.execute(internalRunnable);
 		stage.showAndWait();
-		progressMonitor.checkCanceled();
+		if (internalRunnable.getException() != null) {
+			throw internalRunnable.getException();
+		}
 	}
 
-	private void closeStage(final Stage stage) {
-		Platform.runLater(new Runnable() {
+	private static class InternalRunnable implements Runnable {
+		private CancelException exception;
+		private RunnableWithProgress runnable;
+		private ProgressMonitor progressMonitor;
+		private Stage stage;
 
-			@Override
-			public void run() {
-				stage.close();
+		public InternalRunnable(Stage stage, RunnableWithProgress runnable, ProgressMonitor progressMonitor) {
+			this.runnable = runnable;
+			this.progressMonitor = progressMonitor;
+			this.stage = stage;
+		}
+
+		@Override
+		public void run() {
+			try {
+				runnable.run(progressMonitor);
+			} catch (CancelException e) {
+				progressMonitor.setCanceled();
+				this.exception = e;
+			} finally {
+				closeStage(stage);
 			}
-		});
+		}
+
+		private void closeStage(final Stage stage) {
+			Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+					stage.close();
+				}
+			});
+		}
+
+		public CancelException getException() {
+			return exception;
+		}
 	}
 
 }

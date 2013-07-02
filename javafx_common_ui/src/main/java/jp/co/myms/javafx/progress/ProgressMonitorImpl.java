@@ -23,7 +23,7 @@ public class ProgressMonitorImpl implements ProgressMonitor {
 	public void startTask(int totalTask, String message) {
 		this.totalTask.set(totalTask);
 		this.amountTask.set(totalTask);
-		mainMessageProperty.set(message);
+		setMainMessage(message);
 	}
 
 	@Override
@@ -65,14 +65,7 @@ public class ProgressMonitorImpl implements ProgressMonitor {
 
 	@Override
 	public void setSubMessage(final String message) {
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				messageProperty.set(message);
-			}
-		});
-
+		setMessage(message, messageProperty);
 	}
 
 	@Override
@@ -97,5 +90,27 @@ public class ProgressMonitorImpl implements ProgressMonitor {
 	@Override
 	public StringProperty getSubMessage() {
 		return messageProperty;
+	}
+
+	@Override
+	public void setMainMessage(String mainMessage) {
+		setMessage(mainMessage, mainMessageProperty);
+
+	}
+
+	private void setMessage(final String mainMessage, final SimpleStringProperty messgeProperty) {
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				messgeProperty.set(mainMessage);
+			}
+		});
+
+	}
+
+	@Override
+	public StringProperty getMainMessage() {
+		return mainMessageProperty;
 	}
 }

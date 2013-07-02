@@ -52,6 +52,7 @@ public class ProgressMonitorController implements Initializable {
 
 		progressBar.progressProperty().bind(progressMonitor.getWorkTask());
 		lblMessage.textProperty().bind(progressMonitor.getSubMessage());
+		lblMainMessage.textProperty().bind(progressMonitor.getMainMessage());
 		this.progressMonitor = progressMonitor;
 
 	}

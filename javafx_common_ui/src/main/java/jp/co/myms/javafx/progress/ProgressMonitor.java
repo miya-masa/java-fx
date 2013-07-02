@@ -27,4 +27,8 @@ public interface ProgressMonitor {
 
 	StringProperty getSubMessage();
 
+	void setMainMessage(String mainMessage);
+
+	StringProperty getMainMessage();
+
 }
