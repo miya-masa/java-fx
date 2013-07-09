@@ -42,21 +42,9 @@ public class ProgressMonitorImpl implements ProgressMonitor {
 		return amountTask;
 	}
 
-	public SimpleDoubleProperty getTotalTaskProperty() {
-		return totalTask;
-	}
-
-	public SimpleDoubleProperty getAmountTaskProperty() {
-		return amountTask;
-	}
-
 	@Override
 	public DoubleProperty getWorkTask() {
 		return workTask;
-	}
-
-	public SimpleStringProperty getMessageProperty() {
-		return messageProperty;
 	}
 
 	@Override

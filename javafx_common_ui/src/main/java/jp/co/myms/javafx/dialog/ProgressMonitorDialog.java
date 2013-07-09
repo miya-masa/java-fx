@@ -11,6 +11,7 @@ import javafx.stage.Window;
 import jp.co.myms.javafx.progress.CancelException;
 import jp.co.myms.javafx.progress.ProgressMonitor;
 import jp.co.myms.javafx.progress.ProgressMonitorImpl;
+import jp.co.myms.javafx.progress.RunfailureException;
 import jp.co.myms.javafx.progress.RunnableWithProgress;
 import jp.co.myms.javafx.util.FXMLManager;
 import jp.co.myms.javafx.util.FXMLManagerFactory;
@@ -38,19 +39,22 @@ public class ProgressMonitorDialog {
 		this(owner, new ProgressMonitorImpl());
 	}
 
-	public void run(final RunnableWithProgress runnable) throws CancelException {
+	public void run(final RunnableWithProgress runnable) throws CancelException, RunfailureException {
 
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
 		InternalRunnable internalRunnable = new InternalRunnable(stage, runnable, progressMonitor);
 		executorService.execute(internalRunnable);
 		stage.showAndWait();
-		if (internalRunnable.getException() != null) {
-			throw internalRunnable.getException();
+		if (internalRunnable.getCancelException() != null) {
+			throw internalRunnable.getCancelException();
+		} else if (internalRunnable.getRunfailureException() != null) {
+			throw internalRunnable.getRunfailureException();
 		}
 	}
 
 	private static class InternalRunnable implements Runnable {
-		private CancelException exception;
+		private CancelException cancelException;
+		private RunfailureException runfailureException;
 		private RunnableWithProgress runnable;
 		private ProgressMonitor progressMonitor;
 		private Stage stage;
@@ -67,7 +71,9 @@ public class ProgressMonitorDialog {
 				runnable.run(progressMonitor);
 			} catch (CancelException e) {
 				progressMonitor.setCanceled();
-				this.exception = e;
+				this.cancelException = e;
+			} catch (Exception e) {
+				this.runfailureException = new RunfailureException("実行中に例外が発生しました", e);
 			} finally {
 				closeStage(stage);
 			}
@@ -83,8 +89,12 @@ public class ProgressMonitorDialog {
 			});
 		}
 
-		public CancelException getException() {
-			return exception;
+		public CancelException getCancelException() {
+			return cancelException;
+		}
+
+		public RunfailureException getRunfailureException() {
+			return runfailureException;
 		}
 	}
 
