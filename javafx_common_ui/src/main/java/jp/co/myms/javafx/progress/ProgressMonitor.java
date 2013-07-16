@@ -31,4 +31,6 @@ public interface ProgressMonitor {
 
 	StringProperty getMainMessage();
 
+	boolean isRunning();
+
 }

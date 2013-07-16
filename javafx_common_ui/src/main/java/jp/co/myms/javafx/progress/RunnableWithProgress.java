@@ -1,7 +1,7 @@
 package jp.co.myms.javafx.progress;
 
-public interface RunnableWithProgress {
+public interface RunnableWithProgress<T> {
 
-	void run(ProgressMonitor progressMonitor) throws CancelException;
+	T run(ProgressMonitor progressMonitor) throws CancelException;
 
 }

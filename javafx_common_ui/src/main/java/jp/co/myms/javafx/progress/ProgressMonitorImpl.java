@@ -19,8 +19,12 @@ public class ProgressMonitorImpl implements ProgressMonitor {
 
 	private boolean canceled;
 
+	private boolean isRunning;
+
 	@Override
 	public void startTask(int totalTask, String message) {
+
+		isRunning = true;
 		this.totalTask.set(totalTask);
 		this.amountTask.set(totalTask);
 		setMainMessage(message);
@@ -28,7 +32,7 @@ public class ProgressMonitorImpl implements ProgressMonitor {
 
 	@Override
 	public void start() {
-		//noimpl
+		isRunning = true;
 	}
 
 	@Override
@@ -49,6 +53,7 @@ public class ProgressMonitorImpl implements ProgressMonitor {
 
 	@Override
 	public void end() {
+		isRunning = false;
 	}
 
 	@Override
@@ -58,6 +63,7 @@ public class ProgressMonitorImpl implements ProgressMonitor {
 
 	@Override
 	public void clear() {
+		isRunning = false;
 		totalTask.set(-1);
 		amountTask.set(-1);
 		workTask.set(-1);
@@ -71,6 +77,7 @@ public class ProgressMonitorImpl implements ProgressMonitor {
 	@Override
 	public void checkCanceled() throws CancelException {
 		if (canceled) {
+			isRunning = false;
 			throw new CancelException();
 		}
 	}
@@ -100,5 +107,10 @@ public class ProgressMonitorImpl implements ProgressMonitor {
 	@Override
 	public StringProperty getMainMessage() {
 		return mainMessageProperty;
+	}
+
+	@Override
+	public boolean isRunning() {
+		return isRunning;
 	}
 }

@@ -51,6 +51,11 @@ public class MessageDialog {
 	public static final void showDialog(DialogStatus status) {
 		MessageDialog dialog = new MessageDialog(status.getOwner(), status.getTitle());
 		dialog.setMessage(status.getMessage());
+		dialog.setDetailMessage(status.detailMessage);
 		dialog.show(status.getButtonType());
+	}
+
+	public void setDetailMessage(String detailMessage) {
+		controller.setDetailMessage(detailMessage);
 	}
 }

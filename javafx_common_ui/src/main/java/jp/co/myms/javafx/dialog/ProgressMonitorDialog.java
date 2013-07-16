@@ -39,10 +39,10 @@ public class ProgressMonitorDialog {
 		this(owner, new ProgressMonitorImpl());
 	}
 
-	public void run(final RunnableWithProgress runnable) throws CancelException, RunfailureException {
+	public <T> T run(final RunnableWithProgress<T> runnable) throws CancelException, RunfailureException {
 
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
-		InternalRunnable internalRunnable = new InternalRunnable(stage, runnable, progressMonitor);
+		InternalRunnable<T> internalRunnable = new InternalRunnable<>(stage, runnable, progressMonitor);
 		executorService.execute(internalRunnable);
 		stage.showAndWait();
 		if (internalRunnable.getCancelException() != null) {
@@ -50,25 +50,31 @@ public class ProgressMonitorDialog {
 		} else if (internalRunnable.getRunfailureException() != null) {
 			throw internalRunnable.getRunfailureException();
 		}
+		return internalRunnable.getResult();
 	}
 
-	private static class InternalRunnable implements Runnable {
+	private static class InternalRunnable<T> implements Runnable {
 		private CancelException cancelException;
 		private RunfailureException runfailureException;
-		private RunnableWithProgress runnable;
+		private RunnableWithProgress<T> runnable;
 		private ProgressMonitor progressMonitor;
 		private Stage stage;
+		private T result;
 
-		public InternalRunnable(Stage stage, RunnableWithProgress runnable, ProgressMonitor progressMonitor) {
+		public InternalRunnable(Stage stage, RunnableWithProgress<T> runnable, ProgressMonitor progressMonitor) {
 			this.runnable = runnable;
 			this.progressMonitor = progressMonitor;
 			this.stage = stage;
 		}
 
+		public T getResult() {
+			return result;
+		}
+
 		@Override
 		public void run() {
 			try {
-				runnable.run(progressMonitor);
+				this.result = runnable.run(progressMonitor);
 			} catch (CancelException e) {
 				progressMonitor.setCanceled();
 				this.cancelException = e;

@@ -9,6 +9,7 @@ public class DialogStatus {
 	private String title;
 	private ButtonType[] buttonType;
 	private Window owner;
+	public String detailMessage;
 
 	private DialogStatus() {
 	}
@@ -36,6 +37,11 @@ public class DialogStatus {
 			return this;
 		}
 
+		public DialogStatusBuilder setDetailsMessage(String detailMessage) {
+			target.detailMessage = detailMessage;
+			return this;
+		}
+
 		public DialogStatus build() {
 			return target;
 		}
@@ -44,6 +50,7 @@ public class DialogStatus {
 
 	/**
 	 * messageを取得します。
+	 * 
 	 * @return message
 	 */
 	public String getMessage() {
@@ -52,6 +59,7 @@ public class DialogStatus {
 
 	/**
 	 * titleを取得します。
+	 * 
 	 * @return title
 	 */
 	public String getTitle() {
@@ -60,6 +68,7 @@ public class DialogStatus {
 
 	/**
 	 * buttonTypeを取得します。
+	 * 
 	 * @return buttonType
 	 */
 	public ButtonType[] getButtonType() {
@@ -68,10 +77,29 @@ public class DialogStatus {
 
 	/**
 	 * ownerを取得します。
+	 * 
 	 * @return owner
 	 */
 	public Window getOwner() {
 		return owner;
+	}
+
+	/**
+	 * detailMessageを取得する.
+	 * 
+	 * @return detailMessage
+	 */
+	public String getDetailMessage() {
+		return detailMessage;
+	}
+
+	/**
+	 * detailMessageを設定する.
+	 * 
+	 * @param detailMessage detailMessage
+	 */
+	public void setDetailMessage(String detailMessage) {
+		this.detailMessage = detailMessage;
 	}
 
 }
